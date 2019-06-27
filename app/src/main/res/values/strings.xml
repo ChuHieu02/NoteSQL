@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Note</string>
+    <!--button-->
+    <string name="btn_add">Add</string>
+    <string name="btn_cancel">Cancel</string>
+    <!--text-->
+    <string name="content">Nội dung</string>
+    <string name="title">Tiêu đề</string>
+    <string name="newnote">New Note</string>
+</resources>
