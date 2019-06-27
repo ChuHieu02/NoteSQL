@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 note_dao = new NOTE_DAO(MainActivity.this);
-                note = new Note(null,edttitle.getText().toString(),edtcontennt.getText().toString());
+                note = new Note(edttitle.getText().toString(),edtcontennt.getText().toString());
 
                 if (NOTE_DAO.insertNote(note)==1)
                 {

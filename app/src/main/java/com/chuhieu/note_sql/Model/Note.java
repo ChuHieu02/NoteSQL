@@ -2,10 +2,16 @@ package com.chuhieu.note_sql.Model;
 
 public class Note {
 
-    String Id,title,content;
+    String title,content;
+    int id;
 
-    public Note(String id, String title, String content) {
-        Id = id;
+    public Note(String title, String content, int id) {
+        this.title = title;
+        this.content = content;
+        this.id = id;
+    }
+
+    public Note(String title, String content) {
         this.title = title;
         this.content = content;
     }
@@ -14,13 +20,7 @@ public class Note {
 
     }
 
-    public String getId() {
-        return Id;
-    }
 
-    public void setId(String id) {
-        Id = id;
-    }
 
     public String getTitle() {
         return title;
@@ -37,4 +37,14 @@ public class Note {
     public void setContent(String content) {
         this.content = content;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+
 }

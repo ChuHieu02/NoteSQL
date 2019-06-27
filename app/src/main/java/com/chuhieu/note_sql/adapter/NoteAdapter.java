@@ -27,6 +27,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteHolder> {
         this.context = context;
         this.layoutInflater = layoutInflater;
         this.noteDao = noteDao;
+        noteDao = new NOTE_DAO(context);
     }
 
     @NonNull
@@ -46,8 +47,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteHolder> {
             @Override
             public void onClick(View view) {
 
-                noteList.get(position);
-                noteDao.deleteNguoiDungByID(noteList.get(position).getTitle());
+                noteDao.deleteNguoiDungByID(String.valueOf(note.getId()));
                 noteList.remove(note);
                 notifyDataSetChanged();
             }

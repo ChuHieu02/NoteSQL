@@ -23,10 +23,11 @@ public class NOTE_DAO {
     public static final String COMLUM_TITLE = "title";
     public static final String COMLUM_CONTENT = "content";
 //    create table
-    public static final String Note_SQL = "CREATE TABLE "+TABLE_NAME+"("+
-            " "+COMLUM_ID+"   INTEGER PRIMARY KEY AUTOINCREMENT," +
-            " "+COMLUM_TITLE+"  TEXT," +
-            " "+COMLUM_CONTENT+" TEXT)";
+    public static final String Note_SQL = " CREATE TABLE "+TABLE_NAME+"("+
+             COMLUM_ID      +" INTEGER PRIMARY KEY AUTOINCREMENT," +
+             COMLUM_TITLE   +" TEXT," +
+             COMLUM_CONTENT +" TEXT)";
+
 //cap quyen`
     public NOTE_DAO (Context context){
         databasehelper = new Database(context);
@@ -58,10 +59,9 @@ public class NOTE_DAO {
         cursor.moveToFirst();
         while (cursor.isAfterLast() == false) {
             Note  note = new Note();
-            note.setId(cursor.getString(0));
+            note.setId(cursor.getInt(0));
             note.setTitle(cursor.getString(1));
             note.setContent(cursor.getString(2));
-
 
             cursor.moveToNext();
             ls.add(note);
@@ -72,13 +72,14 @@ public class NOTE_DAO {
 
 
     }
-    //delete 1 hang dua tren username
-    public int deleteNguoiDungByID(String title) {
-        int result = db.delete(TABLE_NAME, "title=?", new String[]{title});
+//    delete 1 hang dua tren username
+    public int deleteNguoiDungByID(String id) {
+        int result = db.delete(TABLE_NAME, COMLUM_ID+"=?", new String[]{id});
         if (result == 0){
             return -1;
         }
 
         return 1;
     }
+
 }
