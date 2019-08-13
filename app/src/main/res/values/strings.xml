@@ -1,10 +1,17 @@
 <resources>
-    <string name="app_name">Note</string>
+    <string name="app_name">Ghi chú</string>
     <!--button-->
     <string name="btn_add">Add</string>
     <string name="btn_cancel">Cancel</string>
     <!--text-->
-    <string name="content">Nội dung</string>
-    <string name="title">Tiêu đề</string>
+    <string name="content">Content</string>
+    <string name="title">Title</string>
     <string name="newnote">New Note</string>
+
+    <string name="title_activity_add_note">AddNoteActi</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="btn_update">Update</string>
+    <string name="channel_name">báo thức</string>
+    <string name="channel_description">ghi chú</string>
 </resources>

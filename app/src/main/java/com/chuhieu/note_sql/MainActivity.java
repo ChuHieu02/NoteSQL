@@ -1,16 +1,19 @@
 package com.chuhieu.note_sql;
 
-import androidx.appcompat.app.AlertDialog;
+import android.annotation.TargetApi;
+import android.content.Intent;
+import android.os.Build;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.chuhieu.note_sql.DAO.NOTE_DAO;
 import com.chuhieu.note_sql.Model.Note;
@@ -22,94 +25,85 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+    private long backPresstime;
+    private Toast backToast;
     NOTE_DAO note_dao;
-    Note note;
     Database database;
-
     RecyclerView recyclerView;
     List<Note> noteList = new ArrayList<>();
     NoteAdapter noteAdapter;
+    static int id;
 
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        recyclerView = findViewById(R.id.rclist);
+        note_dao = new NOTE_DAO(MainActivity.this);
+        noteList = note_dao.getallNguoiDung();
+        noteAdapter = new NoteAdapter(noteList, MainActivity.this);
 
-        pushdata();
+        noteAdapter.setOnclick(new Onclick() {
+            @Override
+            public void Onclickitem(Note note) {
+//                Toast.makeText(getApplicationContext(), note.getId()+"", Toast.LENGTH_SHORT).show();
+                id = note.getId();
+            }
+        });
+        recyclerView.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setAdapter(noteAdapter);
+
 
         //floatActionbutton
         FloatingActionButton floatingActionButton = findViewById(R.id.flbtnadd);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                insertnote();
+                startActivity(new Intent(getApplicationContext(), ThemGhiChu.class));
             }
         });
-    }
-
-    private void pushdata() {
-        // dua du lieu len recyclerview
-        recyclerView = findViewById(R.id.rclist);
-        note_dao = new NOTE_DAO(this);
-        noteList = note_dao.getallNguoiDung();
-        noteAdapter = new NoteAdapter(noteList,MainActivity.this);
-
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(noteAdapter);
-    }
-
-    private AlertDialog alertDialog;
-    private void insertnote(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        View dialog = LayoutInflater.from(MainActivity.this).inflate(R.layout.add_dialog,null);
-        builder.setView(dialog);
-
-        TextView btnadd,btncancel;
-        final EditText edttitle,edtcontennt;
-
-        edttitle    = dialog.findViewById(R.id.edt_title);
-        edtcontennt = dialog.findViewById(R.id.edt_content);
-        btnadd      = dialog.findViewById(R.id.btnadd);
-        btncancel   = dialog.findViewById(R.id.btncancel);
-
-        btnadd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                note_dao = new NOTE_DAO(MainActivity.this);
-                note = new Note(edttitle.getText().toString(),edtcontennt.getText().toString());
-
-                if (NOTE_DAO.insertNote(note)==1)
-                {
-                    Toast.makeText(getApplicationContext(),"Them Thanh Cong",
-                            Toast.LENGTH_SHORT).show();
-                    noteList.clear();
-                    pushdata();
-
-                    alertDialog.dismiss();
-
-
-                }else {
-                    Toast.makeText(getApplicationContext(),"Co loi xay ra",
-                            Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-        btncancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                alertDialog.dismiss();
-            }
-        });
-
-        builder.create();
-        alertDialog = builder.show();
     }
 
     @Override
-    protected void onDestroy() {
-        database.close();
-        super.onDestroy();
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        startActivity(new Intent(getApplicationContext(), BaothucActivity.class));
+
+        //noinspection SimplifiableIfStatement
+
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        if (backPresstime + 2000 > System.currentTimeMillis()) {
+            backToast.cancel();
+            finish();
+            super.onBackPressed();
+            return;
+        } else {
+            backToast = Toast.makeText(this, "Press back again to exit", Toast.LENGTH_SHORT);
+            backToast.show();
+        }
+        backPresstime = System.currentTimeMillis();
+    }
+
 }
 

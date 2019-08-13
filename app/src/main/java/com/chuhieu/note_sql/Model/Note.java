@@ -2,13 +2,16 @@ package com.chuhieu.note_sql.Model;
 
 public class Note {
 
-    String title,content;
+    String title,content,date;
     int id;
+    private byte[] image;
 
-    public Note(String title, String content, int id) {
+    public Note(String title, String content, String date, int id, byte[] image) {
         this.title = title;
         this.content = content;
+        this.date = date;
         this.id = id;
+        this.image = image;
     }
 
     public Note(String title, String content) {
@@ -19,7 +22,6 @@ public class Note {
     public Note() {
 
     }
-
 
 
     public String getTitle() {
@@ -38,6 +40,14 @@ public class Note {
         this.content = content;
     }
 
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
     public int getId() {
         return id;
     }
@@ -46,5 +56,11 @@ public class Note {
         this.id = id;
     }
 
+    public byte[] getImage() {
+        return image;
+    }
 
+    public void setImage(byte[] image) {
+        this.image = image;
+    }
 }
